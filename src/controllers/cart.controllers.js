@@ -56,7 +56,7 @@ const create = catchError(async (req, res) => {
 const remove = catchError(async (req, res) => {
   const { id } = req.params;
   const userId = req.user.id
-  await Cart.destroy({ where: { id, userId } });
+  const result = await Cart.destroy({ where: { id, userId } });
   if(!result) return res.sendStatus(404)
   return res.sendStatus(204);
 });
@@ -64,7 +64,8 @@ const remove = catchError(async (req, res) => {
 const update = catchError(async (req, res) => {
   const userId = req.user.id
   const { id } = req.params;
-  const { quantity } = res.body
+  const { quantity } = req.body
+  // console.log(quantity);
   const result = await Cart.update(
     { quantity },
     { where: { id, userId }, returning: true }
